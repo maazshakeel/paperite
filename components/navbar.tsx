@@ -1,18 +1,10 @@
 "use client";
 
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
+import { Menubar, MenubarMenu } from "@/components/ui/menubar";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import Link from "next/link";
-import { PenLine, Zap } from "lucide-react";
+import { PenLine } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { toast } from "./ui/use-toast";
 import { useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 
@@ -27,27 +19,10 @@ export default function Navbar() {
           <PenLine size={20} />
           <MenubarMenu>Paperite</MenubarMenu>
         </Link>
-        <div className="flex gap-1 items-center">
+        <div className="flex gap-0 items-center">
           {session ? (
             <>
-              <MenubarMenu>
-                <MenubarTrigger>Create Deck</MenubarTrigger>
-
-                <MenubarContent>
-                  <MenubarItem onClick={() => router.push("/create")}>
-                    Deck <MenubarShortcut>⌘T</MenubarShortcut>
-                  </MenubarItem>
-                  <MenubarItem
-                    onClick={() => {
-                      toast({
-                        description: "This feature is still in process!",
-                      });
-                    }}
-                  >
-                    Upload File <MenubarShortcut>⌘N</MenubarShortcut>
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
+              <Button>Create Blog</Button>
 
               <Button>Logout</Button>
             </>
@@ -56,7 +31,7 @@ export default function Navbar() {
               <Button
                 variant={"ghost"}
                 onClick={() => {
-                  router.push("/login");
+                  router.push("/auth/login");
                 }}
               >
                 Login
@@ -65,7 +40,7 @@ export default function Navbar() {
               <Button
                 variant={"ghost"}
                 onClick={() => {
-                  router.push("/signup");
+                  router.push("/auth/register");
                 }}
               >
                 Create Account
