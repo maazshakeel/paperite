@@ -35,6 +35,61 @@ export default function SignUp() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     console.log(values);
+    if (values.password !== values.confirmPassword) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Passwords do not match!",
+      });
+      return;
+    }
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      // Registration successful, loggin user in
+      const user: any = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
+      if (user.ok === true) {
+        toast({
+          variant: "default",
+          title: "Success",
+          description: "Account Created!",
+        });
+        router.push("/");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Couldn't sign in!",
+        });
+      }
+    } catch (error: any) {
+      console.error("Error registering user:", error.message);
+      // Handle the error as needed
+
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
+    }
   }
   return (
     <Form {...form}>
