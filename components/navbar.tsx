@@ -5,7 +5,7 @@ import { ModeToggle } from "@/components/ui/mode-toggle";
 import Link from "next/link";
 import { PenLine } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 
 export default function Navbar() {
@@ -22,16 +22,21 @@ export default function Navbar() {
         <div className="flex gap-0 items-center">
           {session ? (
             <>
-              <Button>Create Blog</Button>
+              <Button variant={"ghost"}>Create Blog</Button>
 
-              <Button>Logout</Button>
+              <Button
+                onClick={() => signOut({ callbackUrl: "/api/auth/signin" })}
+                variant={"ghost"}
+              >
+                Logout
+              </Button>
             </>
           ) : (
             <>
               <Button
                 variant={"ghost"}
                 onClick={() => {
-                  router.push("/auth/login");
+                  router.push("/api/auth/signin?callbackUrl=/");
                 }}
               >
                 Login

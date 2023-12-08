@@ -2,10 +2,10 @@ import type { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "@/lib/db";
-import { User } from "@prisma/client";
 import { login } from "@/lib/auth";
 
 export const options: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET as string,
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
@@ -41,6 +41,6 @@ export const options: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/login",
+    signIn: "/auth/login",
   },
 };
